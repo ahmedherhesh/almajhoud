@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1'], function () {
+
+    Route::get('login', function () {
+        return response()->json(['msg' => 'Unauthorized!'], 403);
+    })->name('login');
+
+    Route::post('login', [UserController::class, 'login']);
+    Route::post('register', [UserController::class, 'register'])->name('register');
+
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::group(['middleware' => ['role:admin', 'api']], function () {
+            Route::get('users', [UserController::class, 'index']);
+        });
+        Route::post('change-my-password', [UserController::class, 'changeMyPassword']);
+    });
 });

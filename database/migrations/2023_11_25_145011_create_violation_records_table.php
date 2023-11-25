@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('unit_id');
+            $table->unsignedBigInteger('violation_id');
             $table->integer('count');
             $table->timestamps();
         });
