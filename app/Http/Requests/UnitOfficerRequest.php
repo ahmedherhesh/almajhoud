@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 
 class UnitOfficerRequest extends MasterRequest
 {
-
     public function rules(): array
     {
         return [

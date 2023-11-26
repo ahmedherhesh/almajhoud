@@ -8,8 +8,8 @@ class LoginRequest extends MasterRequest
     public function rules(): array
     {
         return [
-            'email'    => 'required|email|exists:users,email',
-            'password' => 'required|min:6'
+            'email'    => 'required|email|exists:users,email|max:255',
+            'password' => 'required|min:6|max:255'
         ];
     }
 }

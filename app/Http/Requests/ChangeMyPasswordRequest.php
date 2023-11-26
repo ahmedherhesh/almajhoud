@@ -10,8 +10,8 @@ class ChangeMyPasswordRequest extends MasterRequest
     public function rules(): array
     {
         return [
-            'old_password' => 'required|min:6',
-            'password' => 'required|min:6|confirmed'
+            'old_password' => 'required|min:6|max:255',
+            'password' => 'required|min:6|confirmed|max:255'
         ];
     }
 }

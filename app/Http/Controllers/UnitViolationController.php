@@ -12,8 +12,8 @@ class UnitViolationController extends MasterController
     public function store(UnitViolationRequest $request)
     {
         $userUnit = $this->user()->unit;
-        return $userUnit;
-        UnitViolation::create($request->all());
+        if ($userUnit->unit_id == $request->unit_id)
+            UnitViolation::create($request->all());
     }
 
     public function update(Request $request, UnitViolation $unitViolation)

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('unit_violations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('unit_id');
             $table->unsignedBigInteger('violation_id');
             $table->integer('count');

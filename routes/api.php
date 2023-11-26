@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\UnitViolationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,24 +26,35 @@ Route::group(['prefix' => 'v1'], function () {
     Route::controller(UserController::class)->group(function () {
         Route::post('login', 'login');
         Route::post('register', 'register')->name('register');
+        //auth required
         Route::group(['middleware' => ['auth:sanctum']], function () {
             //admin
             Route::group(['middleware' => ['role:admin']], function () {
-                Route::get('users', 'index');
-                Route::put('users/{user}', 'update');
-                Route::delete('users/{user}', 'destroy');
+                Route::get('users', 'users');
                 Route::get('set-user-active/{user}', 'setUserActive');
                 Route::get('set-user-block/{user}', 'setUserBlock');
+                Route::put('users/{user}', 'update');
+                Route::delete('users/{user}', 'destroy');
             });
             //all
             Route::post('change-my-password', 'changeMyPassword');
         });
     });
-
+    //auth required
     Route::group(['middleware' => ['auth:sanctum']], function () {
         //admin
         Route::group(['middleware' => ['role:admin']], function () {
             Route::post('set-unit-officer', [UnitController::class, 'setUnitOfficer']);
+            Route::controller(UnitController::class)->group(function () {
+                Route::get('units/', 'index');
+                Route::post('units/', 'store');
+                Route::put('units/{unit}', 'update');
+                Route::delete('units/{unit}', 'destroy');
+            });
         });
+        Route::get('units/{unit}', [UnitController::class, 'show'])->middleware(['can:المخالفات']);
+        //user
+        //violations store
+        Route::post('violations', [UnitViolationController::class, 'store']);
     });
 });

@@ -11,8 +11,8 @@ class UserUpdateRequest extends MasterRequest
     {
         $user = $this->route('user');
         return [
-            'name'     => 'required|min:3',
-            'email'    => 'required|email|unique:users,email,' . $user->id,
+            'name'     => 'required|min:3|max:255',
+            'email'    => 'required|email|max:255|unique:users,email,' . $user->id,
             'role'     => 'nullable|in:user,admin'
         ];
     }
