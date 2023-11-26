@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UnitOfficerRequest;
 use App\Models\Unit;
+use App\Models\UnitOfficer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UnitController extends Controller
@@ -12,23 +15,17 @@ class UnitController extends Controller
      */
     public function index()
     {
-        //
+        return Unit::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        Unit::create($request->all());
+        return response()->json(['msg' => 'تم اضافة الوحدة']);
     }
 
     /**
@@ -36,15 +33,7 @@ class UnitController extends Controller
      */
     public function show(Unit $unit)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Unit $unit)
-    {
-        //
+        return $unit->violations;
     }
 
     /**
@@ -52,7 +41,16 @@ class UnitController extends Controller
      */
     public function update(Request $request, Unit $unit)
     {
-        //
+        return $unit->update($request->all());
+    }
+
+    public function setUnitOfficer(UnitOfficerRequest $request)
+    {
+        $unitOfficer = UnitOfficer::whereUnitId($request->unit_id)->orderByDesc('id')->first();
+        if ($unitOfficer)
+            $unitOfficer->update(['expires_at' => Carbon::now()]);
+        UnitOfficer::create($request->all());
+        return response()->json(['msg' => 'تمت العملية بنجاح']);
     }
 
     /**
@@ -60,6 +58,7 @@ class UnitController extends Controller
      */
     public function destroy(Unit $unit)
     {
-        //
+        $unit->delete();
+        return response()->json(['msg' => 'تم حذف الوحدة']);
     }
 }

@@ -17,15 +17,6 @@ class RoleSeeder extends Seeder
         $admin = Role::create(['name' => 'admin']);
         Role::create(['name' => 'user']);
         $permissions = [
-            ['name' => 'وحدة المنصورة'],
-            ['name' => 'وحدة بلقاس'],
-            ['name' => 'وحدة ميت غمر'],
-            ['name' => 'وحدة شربين'],
-            ['name' => 'وحدة دكرنس'],
-            ['name' => 'وحدة جمصة'],
-            ['name' => 'وحدة اجا'],
-            ['name' => 'السنبلاوين'],
-            ['name' => 'المنزلة'],
             ['name' => 'المخالفات'],
             ['name' => 'تسجيل المخالفات'],
             ['name' => 'عرض المخالفات'],

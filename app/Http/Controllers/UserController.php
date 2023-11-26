@@ -5,19 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ChangeMyPasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends MasterController
 {
     function login(LoginRequest $request)
     {
-        $auth = auth()->attempt($request->all());
+        auth()->attempt($request->only('email', 'password'));
         $user = auth()->user();
-        $user->showToken = true;
-        return $this->response($auth, new UserResource($user), 'Email Or Password InCorrect');
+        if ($user)
+            $user->showToken = true;
+        if ($user->status == 'active')
+            return $this->response($user, new UserResource($user), ['msg' => 'Email Or Password InCorrect']);
+        return response()->json(['msg' => 'هذا المستخدم غير مسموح له بالدخول تحدث مع الأدمن من أجل حل المشكلة']);
     }
 
     function register(RegisterRequest $request)
@@ -26,15 +29,27 @@ class UserController extends MasterController
         $role = $this->isAdmin() ? $request->role : 'user';
         $user->assignRole($role);
         $user->showToken = true;
-        return $this->response($user, new UserResource($user));
+        if ($user->status == 'active')
+            return $this->response($user, new UserResource($user));
+        return response()->json(['msg' => 'هذا المستخدم غير مسموح له بالدخول تحدث مع الأدمن من أجل حل المشكلة']);
     }
 
-    function index()
+    function users()
     {
         $users = User::all();
         return $this->response($users, UserResource::collection($users));
     }
-    
+    function setUserActive(User $user)
+    {
+        $user->update(['status' => 'active']);
+        return response()->json(['msg' => 'تم تفعيل المستخدم']);
+    }
+    function setUserBlock(User $user)
+    {
+        $user->update(['status' => 'block']);
+        return response()->json(['msg' => 'تم حظر المستخدم']);
+    }
+
     function changeMyPassword(ChangeMyPasswordRequest $request)
     {
         $hashed = $this->user()->password;
@@ -42,8 +57,20 @@ class UserController extends MasterController
             $this->user()->update([
                 'password' => $request->password
             ]);
-            return response()->json(['msg' => 'Your password has changed successfully']);
+            return response()->json(['msg' => 'تم تغيير كلمة السر']);
         }
-        return response()->json(['msg' => 'Old password incorrect']);
+        return response()->json(['msg' => 'كلمة السر القديمة غير صحيحة']);
+    }
+    function update(UserUpdateRequest $request, User $user)
+    {
+        $user->update($request->all());
+        if ($request->role)
+            $user->assignRole($request->role);
+        return response()->json(['msg' => 'تم تحديث المستخدم']);
+    }
+    function destroy(User $user)
+    {
+        $user->delete();
+        return response()->json(['msg' => 'تم حذف المستخدم بنجاح']);
     }
 }

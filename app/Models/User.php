@@ -44,4 +44,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    function unit()
+    {
+        return $this->hasOne(UnitOfficer::class)->whereExpiresAt(null);
+    }
 }
