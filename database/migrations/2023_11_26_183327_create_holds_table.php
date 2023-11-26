@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('unit_violations', function (Blueprint $table) {
+        Schema::create('holds', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('unit_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('violation_id');
-            $table->integer('count');
-            $table->timestamp('cant_edit_at')->nullable();
+            $table->json('requests');
+            $table->enum('status', ['accepted', 'rejected'])->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('unit_violations');
+        Schema::dropIfExists('holds');
     }
 };

@@ -13,32 +13,22 @@ use Illuminate\Http\Request;
 
 class UnitController extends MasterController
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return UnitResource::collection(Unit::all());
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(UnitRequest $request)
     {
         Unit::create($request->all());
         return response()->json(['msg' => 'تم اضافة الوحدة']);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Unit $unit)
     {
         $unitViolation = UnitViolation::whereUnitId($unit->id);
         if (!$this->isAdmin())
-            $unitViolation->whereUserId($this->user()->id)->get();
+            $unitViolation = $unitViolation->whereUserId($this->user()->id);
         return $unitViolation->get();
     }
 
@@ -52,16 +42,13 @@ class UnitController extends MasterController
 
     public function setUnitOfficer(UnitOfficerRequest $request)
     {
-        $unitOfficer = UnitOfficer::whereUserId($request->user_id)->orderByDesc('id')->first();
+        $unitOfficer = UnitOfficer::whereUnitId($request->unit_id)->orderByDesc('id')->first();
         if ($unitOfficer)
             $unitOfficer->update(['expires_at' => Carbon::now()]);
         UnitOfficer::create($request->all());
         return response()->json(['msg' => 'تمت العملية بنجاح']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Unit $unit)
     {
         $unit->delete();

@@ -52,9 +52,12 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::delete('units/{unit}', 'destroy');
             });
         });
-        Route::get('units/{unit}', [UnitController::class, 'show'])->middleware(['can:المخالفات']);
-        //user
-        //violations store
-        Route::post('violations', [UnitViolationController::class, 'store']);
+        //all
+        Route::get('units/{unit}', [UnitController::class, 'show'])->middleware(['can:عرض المخالفات']);
+        Route::middleware(['have.unit'])->group(function () {
+            Route::post('unit-violations', [UnitViolationController::class, 'store'])->middleware(['can:تسجيل المخالفات']);
+            Route::put('unit-violations/{id}', [UnitViolationController::class, 'update'])->middleware(['can:تعديل المخالفات']);
+        });
+        Route::delete('unit-violations/{id}', [UnitViolationController::class, 'destroy'])->middleware(['can:حذف المخالفات']);
     });
 });
