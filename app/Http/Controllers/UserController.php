@@ -19,8 +19,8 @@ class UserController extends MasterController
         if ($user)
             $user->showToken = true;
         if ($user->status == 'active')
-            return $this->response($user, new UserResource($user), ['msg' => 'Email Or Password InCorrect']);
-        return response()->json(['msg' => 'هذا المستخدم غير مسموح له بالدخول تحدث مع الأدمن من أجل حل المشكلة']);
+            return $this->response($user, new UserResource($user), ['status' => 400, 'msg' => 'Email Or Password InCorrect']);
+        return response()->json(['status' => 400, 'msg' => 'هذا المستخدم غير مسموح له بالدخول تحدث مع الأدمن من أجل حل المشكلة']);
     }
 
     function register(RegisterRequest $request)
@@ -30,8 +30,8 @@ class UserController extends MasterController
         $user->assignRole($role);
         $user->showToken = true;
         if ($user->status == 'active')
-            return $this->response($user, new UserResource($user));
-        return response()->json(['msg' => 'هذا المستخدم غير مسموح له بالدخول تحدث مع الأدمن من أجل حل المشكلة']);
+            return response()->json(['status' => 200, 'msg' => '', new UserResource($user)]);
+        return response()->json(['status' => 400, 'msg' => 'هذا المستخدم غير مسموح له بالدخول تحدث مع الأدمن من أجل حل المشكلة']);
     }
 
     function users()
@@ -39,15 +39,19 @@ class UserController extends MasterController
         $users = User::all();
         return $this->response($users, UserResource::collection($users));
     }
+    function getUser()
+    {
+        $this->user() ? new UserResource($this->user()) : ['status' => 400, 'msg' => 'قم بتسجيل الدخول اولاً'];
+    }
     function setUserActive(User $user)
     {
         $user->update(['status' => 'active']);
-        return response()->json(['msg' => 'تم تفعيل المستخدم']);
+        return response()->json(['status' => 200, 'msg' => 'تم تفعيل المستخدم']);
     }
     function setUserBlock(User $user)
     {
         $user->update(['status' => 'block']);
-        return response()->json(['msg' => 'تم حظر المستخدم']);
+        return response()->json(['status' => 200, 'msg' => 'تم حظر المستخدم']);
     }
 
     function changeMyPassword(ChangeMyPasswordRequest $request)
@@ -57,20 +61,20 @@ class UserController extends MasterController
             $this->user()->update([
                 'password' => $request->password
             ]);
-            return response()->json(['msg' => 'تم تغيير كلمة السر']);
+            return response()->json(['status' => 200, 'msg' => 'تم تغيير كلمة السر']);
         }
-        return response()->json(['msg' => 'كلمة السر القديمة غير صحيحة']);
+        return response()->json(['status' => 400, 'msg' => 'كلمة السر القديمة غير صحيحة']);
     }
     function update(UserUpdateRequest $request, User $user)
     {
         $user->update($request->all());
         if ($request->role)
             $user->assignRole($request->role);
-        return response()->json(['msg' => 'تم تحديث المستخدم']);
+        return response()->json(['status' => 200, 'msg' => 'تم تحديث المستخدم']);
     }
     function destroy(User $user)
     {
         $user->delete();
-        return response()->json(['msg' => 'تم حذف المستخدم بنجاح']);
+        return response()->json(['status' => 200, 'msg' => 'تم حذف المستخدم بنجاح']);
     }
 }

@@ -28,6 +28,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('register', 'register')->name('register');
         //auth required
         Route::group(['middleware' => ['auth:sanctum']], function () {
+            Route::get('user', 'getUser');
             //admin
             Route::group(['middleware' => ['role:admin']], function () {
                 Route::get('users', 'users');
