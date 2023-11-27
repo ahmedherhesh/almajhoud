@@ -3,6 +3,7 @@
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UnitViolationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ViolationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +53,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::put('units/{unit}', 'update');
                 Route::delete('units/{unit}', 'destroy');
             });
+            Route::resource('violations', ViolationController::class)->except(['show', 'edit']);
         });
         //all
         Route::get('units/{unit}', [UnitController::class, 'show'])->middleware(['can:عرض المخالفات']);

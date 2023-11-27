@@ -10,9 +10,6 @@ use Illuminate\Http\Request;
 
 class UnitViolationController extends MasterController
 {
-    function unitViolation()
-    {
-    }
 
     public function store(UnitViolationRequest $request)
     {

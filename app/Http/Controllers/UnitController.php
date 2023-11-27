@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UnitOfficerRequest;
 use App\Http\Requests\UnitRequest;
 use App\Http\Resources\UnitResource;
+use App\Http\Resources\UnitViolationResource;
 use App\Models\Unit;
 use App\Models\UnitOfficer;
 use App\Models\UnitViolation;
@@ -29,7 +30,7 @@ class UnitController extends MasterController
         $unitViolation = UnitViolation::whereUnitId($unit->id);
         if (!$this->isAdmin())
             $unitViolation = $unitViolation->whereUserId($this->user()->id);
-        return $unitViolation->get();
+        return UnitViolationResource::collection($unitViolation->get());
     }
 
     /**
