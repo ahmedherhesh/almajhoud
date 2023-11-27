@@ -27,6 +27,6 @@ class ViolationController extends Controller
     public function destroy(Violation $violation)
     {
         $violation->delete();
-        return response()->json(['status' => 200, 'msg' => 'تم حذف المخالفة']);
+        return response()->json(['status' => 200, 'msg' => 'تم حذف المخالفة']); 
     }
 }
