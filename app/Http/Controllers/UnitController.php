@@ -16,7 +16,10 @@ class UnitController extends MasterController
 {
     public function index()
     {
-        return UnitResource::collection(Unit::all());
+        return response()->json([
+            'status' => 200,
+            'data' => UnitResource::collection(Unit::all())
+        ]);
     }
 
     public function store(UnitRequest $request)
