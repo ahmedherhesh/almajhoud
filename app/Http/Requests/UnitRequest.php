@@ -9,7 +9,7 @@ class UnitRequest extends MasterRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|min:2|max:255'
+            'title' => 'required|unique:units,title|min:2|max:255'
         ];
     }
 }

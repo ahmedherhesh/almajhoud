@@ -18,14 +18,14 @@ class UnitController extends MasterController
     {
         return response()->json([
             'status' => 200,
-            'data' => UnitResource::collection(Unit::all())
+            'data'   => UnitResource::collection(Unit::all())
         ]);
     }
 
     public function store(UnitRequest $request)
     {
         Unit::create($request->all());
-        return response()->json(['msg' => 'تم اضافة الوحدة']);
+        return response()->json(['status' => 200, 'msg' => 'تم اضافة الوحدة']);
     }
 
     public function show(Unit $unit)
@@ -33,7 +33,10 @@ class UnitController extends MasterController
         $unitViolation = UnitViolation::whereUnitId($unit->id);
         if (!$this->isAdmin())
             $unitViolation = $unitViolation->whereUserId($this->user()->id);
-        return UnitViolationResource::collection($unitViolation->get());
+        return response()->json([
+            'status' => 200,
+            'data' => UnitViolationResource::collection($unitViolation->get())
+        ]);
     }
 
     /**
@@ -41,7 +44,8 @@ class UnitController extends MasterController
      */
     public function update(Request $request, Unit $unit)
     {
-        return $unit->update($request->all());
+        $unit->update($request->all());
+        return response()->json(['status' => 200, 'msg' => 'تم تحديث الوحدة']);
     }
 
     public function setUnitOfficer(UnitOfficerRequest $request)
@@ -50,12 +54,12 @@ class UnitController extends MasterController
         if ($unitOfficer)
             $unitOfficer->update(['expires_at' => Carbon::now()]);
         UnitOfficer::create($request->all());
-        return response()->json(['msg' => 'تمت العملية بنجاح']);
+        return response()->json(['status' => 200, 'msg' => 'تمت العملية بنجاح']);
     }
 
     public function destroy(Unit $unit)
     {
         $unit->delete();
-        return response()->json(['msg' => 'تم حذف الوحدة']);
+        return response()->json(['status' => 200, 'msg' => 'تم حذف الوحدة']);
     }
 }
