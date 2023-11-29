@@ -50,7 +50,7 @@ class UnitController extends MasterController
 
     public function setUnitOfficer(UnitOfficerRequest $request)
     {
-        $unitOfficer = UnitOfficer::whereUnitId($request->unit_id)->orderByDesc('id')->first();
+        $unitOfficer = UnitOfficer::whereUnitId($request->unit_id)->orWhere('user_id', $request->user_id)->orderByDesc('id')->first();
         if ($unitOfficer)
             $unitOfficer->update(['expires_at' => Carbon::now()]);
         UnitOfficer::create($request->all());

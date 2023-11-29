@@ -22,7 +22,7 @@ class HaveUnit
             if (!$user->unit)
                 return response()->json(['msg' => 'عفوا انت لا تملك الصلاحية للوصول لأي وحدة مرور']);
             //if user cant access to this unit
-            if ($user->unit->id != $request->unit_id)
+            if ($user->unit->unit_id != $request->unit_id)
                 return response()->json(['msg' => 'لا تملك صلاحية الوصول لهذه الوحدة']);
         }
         return $next($request);

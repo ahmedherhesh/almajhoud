@@ -15,4 +15,8 @@ class UnitOfficer extends Model
     {
         return $query->whereUnitId($request->unit_id)->whereUserId($request->user_id)->whereExpiresAt(null);
     }
+    function myUnit()
+    {
+        return $this->belongsTo(Unit::class,'unit_id','id');
+    }
 }

@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'status' => $this->status,
             'role'   => $this->getRoleNames()[0] ?? "",
             'permissions'  => $this->getPermissionNames(),
+            'unit'   => $this->unit->myUnit
         ];
 
         if ($this->showToken)

@@ -47,6 +47,7 @@ class User extends Authenticatable
 
     function unit()
     {
-        return $this->hasOne(UnitOfficer::class)->whereExpiresAt(null);
+        return $this->hasOne(UnitOfficer::class)->whereExpiresAt(null)->orderByDesc('id');
     }
+    
 }
