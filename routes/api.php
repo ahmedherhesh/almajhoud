@@ -54,6 +54,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::delete('units/{unit}', 'destroy');
             });
             Route::resource('violations', ViolationController::class)->except(['show', 'edit']);
+            Route::get('unit-violations', [UnitViolationController::class, 'index']);
         });
         //all
         Route::get('units/{unit}', [UnitController::class, 'show'])->middleware(['can:عرض المخالفات']);

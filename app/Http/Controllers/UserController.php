@@ -41,7 +41,7 @@ class UserController extends MasterController
     }
     function getUser()
     {
-        $this->user() ? new UserResource($this->user()) : ['status' => 400, 'msg' => 'قم بتسجيل الدخول اولاً'];
+       return  $this->user() ? new UserResource($this->user()) : ['status' => 400, 'msg' => 'قم بتسجيل الدخول اولاً'];
     }
     function setUserActive(User $user)
     {

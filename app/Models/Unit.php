@@ -20,4 +20,8 @@ class Unit extends Model
     {
         return $this->belongsTo(User::class);
     }
+    function unitOfficer()
+    {
+        return $this->hasOne(UnitOfficer::class)->whereExpiresAt(null);
+    }
 }

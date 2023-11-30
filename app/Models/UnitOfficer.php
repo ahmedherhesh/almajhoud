@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class UnitOfficer extends Model
 {
-    use HasFactory, UserTrait;
+    use HasFactory,UserTrait;
     protected $fillable = ['user_id', 'unit_id', 'expires_at'];
     function scopeOfficer($query, Request $request)
     {
@@ -17,6 +17,6 @@ class UnitOfficer extends Model
     }
     function myUnit()
     {
-        return $this->belongsTo(Unit::class,'unit_id','id');
+        return $this->belongsTo(Unit::class,'unit_id');
     }
 }

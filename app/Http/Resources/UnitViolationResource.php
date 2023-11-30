@@ -17,8 +17,8 @@ class UnitViolationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->user->name,
-            'unit' => $this->unit->title,
+            // 'user' => $this->user->name,
+            // 'unit' => $this->unit->title,
             'violation' => $this->violation->title,
             'count' => $this->count,
             'cant_edit' => $this->cant_edit_at <= Carbon::now(),

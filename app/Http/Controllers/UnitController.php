@@ -28,9 +28,15 @@ class UnitController extends MasterController
         return response()->json(['status' => 200, 'msg' => 'تم اضافة الوحدة']);
     }
 
-    public function show(Unit $unit)
+    public function show(Request $request, Unit $unit)
     {
         $unitViolation = UnitViolation::whereUnitId($unit->id);
+        if ($request->from)
+            $unitViolation->whereDate('created_at', '>=', $request->from);
+        if ($request->to)
+            $unitViolation->whereDate('created_at', '<=', $request->to);
+        if (!$request->from && !$request->to)
+            $unitViolation->whereDate('created_at', Carbon::now());
         if (!$this->isAdmin())
             $unitViolation = $unitViolation->whereUserId($this->user()->id);
         return response()->json([

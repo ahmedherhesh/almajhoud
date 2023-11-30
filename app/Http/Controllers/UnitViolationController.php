@@ -4,12 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UnitViolationRequest;
 use App\Http\Requests\UnitViolationUpdateRequest;
+use App\Http\Resources\UnitsViolationResource;
 use App\Models\UnitViolation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UnitViolationController extends MasterController
 {
+    public function index(Request $request)
+    {
+        $unitsViolation = UnitViolation::query();
+        if ($request->from)
+            $unitsViolation->whereDate('created_at', '>=', $request->from);
+        if ($request->to)
+            $unitsViolation->whereDate('created_at', '<=', $request->to);
+        if (!$request->from && !$request->to)
+            $unitsViolation->whereDate('created_at', Carbon::now());
+        if (!$this->isAdmin())
+            $unitsViolation = $unitsViolation->whereUserId($this->user()->id);
+        $unitsViolation = $unitsViolation->select(DB::raw("SUM(`count`) AS `count`"), 'violation_id')
+            ->groupBy('violation_id')->get();
+        return response()->json([
+            'status' => 200,
+            'data' => UnitsViolationResource::collection($unitsViolation)
+        ]);
+    }
 
     public function store(UnitViolationRequest $request)
     {
