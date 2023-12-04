@@ -11,6 +11,7 @@ use App\Models\UnitOfficer;
 use App\Models\UnitViolation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UnitController extends MasterController
 {
@@ -39,6 +40,7 @@ class UnitController extends MasterController
             $unitViolation->whereDate('created_at', Carbon::now());
         if (!$this->isAdmin())
             $unitViolation = $unitViolation->whereUserId($this->user()->id);
+        $unitViolation = $unitViolation->select(DB::raw("SUM(`count`) AS `count`"), 'violation_id');
         return response()->json([
             'status' => 200,
             'data' => UnitViolationResource::collection($unitViolation->get())

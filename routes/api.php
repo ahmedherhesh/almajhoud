@@ -53,9 +53,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::put('units/{unit}', 'update');
                 Route::delete('units/{unit}', 'destroy');
             });
-            Route::resource('violations', ViolationController::class)->except(['show', 'edit']);
+            Route::resource('violations', ViolationController::class)->except(['show', 'edit', 'index']);
             Route::get('unit-violations', [UnitViolationController::class, 'index']);
         });
+        Route::get('violations', [ViolationController::class, 'index']);
         //all
         Route::get('units/{unit}', [UnitController::class, 'show'])->middleware(['can:عرض المخالفات']);
         Route::middleware(['have.unit'])->group(function () {

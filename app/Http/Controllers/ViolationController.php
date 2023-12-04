@@ -10,7 +10,7 @@ class ViolationController extends Controller
 {
     public function index()
     {
-        return ViolationResource::collection(Violation::all());
+        return response()->json(['status' => 200, 'data' => ViolationResource::collection(Violation::all())]);
     }
     public function store(ViolationRequest $request)
     {
@@ -27,6 +27,6 @@ class ViolationController extends Controller
     public function destroy(Violation $violation)
     {
         $violation->delete();
-        return response()->json(['status' => 200, 'msg' => 'تم حذف المخالفة']); 
+        return response()->json(['status' => 200, 'msg' => 'تم حذف المخالفة']);
     }
 }

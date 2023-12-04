@@ -18,9 +18,9 @@ class UserController extends MasterController
         $user = auth()->user();
         if ($user)
             $user->showToken = true;
-        if ($user->status == 'active')
-            return $this->response($user, new UserResource($user), ['status' => 400, 'msg' => 'Email Or Password InCorrect']);
-        return response()->json(['status' => 400, 'msg' => 'هذا المستخدم غير مسموح له بالدخول تحدث مع الأدمن من أجل حل المشكلة']);
+        if ($user && $user->status != 'active')
+            return response()->json(['status' => 400, 'msg' => 'هذا المستخدم غير مسموح له بالدخول تحدث مع الأدمن من أجل حل المشكلة']);
+        return $this->response($user, new UserResource($user), ['status' => 400, 'msg' => 'Email Or Password InCorrect']);
     }
 
     function register(RegisterRequest $request)
@@ -41,7 +41,7 @@ class UserController extends MasterController
     }
     function getUser()
     {
-       return  $this->user() ? new UserResource($this->user()) : ['status' => 400, 'msg' => 'قم بتسجيل الدخول اولاً'];
+        return  $this->user() ? new UserResource($this->user()) : ['status' => 400, 'msg' => 'قم بتسجيل الدخول اولاً'];
     }
     function setUserActive(User $user)
     {
