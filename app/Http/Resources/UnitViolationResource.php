@@ -21,8 +21,8 @@ class UnitViolationResource extends JsonResource
             // 'unit' => $this->unit->title,
             'violation' => $this->violation->title,
             'count' => $this->count,
-            'cant_edit' => $this->cant_edit_at <= Carbon::now(),
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'cant_edit' => $this->cant_edit_at ? $this->cant_edit_at <= Carbon::now() : null,
+            'created_at' => $this->created_at ? $this->created_at->format('Y-m-d H:i:s') : null,
         ];
     }
 }

@@ -38,10 +38,10 @@ class UnitViolationController extends MasterController
             ->whereUnitId($request->unit_id)
             ->whereViolationId($request->violation_id)->first();
         if ($issetUnitViolation)
-            return response()->json(['msg' => 'تم تسجيل المخالفة سابقاً']);
+            return response()->json(['status' => 400, 'msg' => 'تم تسجيل المخالفة سابقاً']);
 
         UnitViolation::create($request->all());
-        return response()->json(['msg' => 'تم تسجيل المخالفة']);
+        return response()->json(['status' => 200, 'msg' => 'تم تسجيل المخالفة']);
     }
 
     public function update(UnitViolationUpdateRequest $request, $id)
