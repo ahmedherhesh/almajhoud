@@ -58,8 +58,8 @@ Route::group(['prefix' => 'v1'], function () {
         });
         Route::get('violations', [ViolationController::class, 'index']);
         //all
-        Route::get('units/{unit}', [UnitController::class, 'show'])->middleware(['can:عرض المخالفات']);
         Route::middleware(['have.unit'])->group(function () {
+            Route::get('units/{unit}', [UnitController::class, 'show'])->middleware(['can:عرض المخالفات']);
             Route::post('unit-violations', [UnitViolationController::class, 'store'])->middleware(['can:تسجيل المخالفات']);
             Route::put('unit-violations/{id}', [UnitViolationController::class, 'update'])->middleware(['can:تعديل المخالفات']);
             Route::delete('unit-violations/{id}', [UnitViolationController::class, 'destroy'])->middleware(['can:حذف المخالفات']);

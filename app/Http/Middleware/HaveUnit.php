@@ -20,10 +20,10 @@ class HaveUnit
         if ($user && !$user->hasRole('admin')) {
             //if the user have any unit
             if (!$user->unit)
-                return response()->json(['msg' => 'عفوا انت لا تملك الصلاحية للوصول لأي وحدة مرور']);
+                return response()->json(['status' => 400, 'msg' => 'عفوا انت لا تملك الصلاحية للوصول لأي وحدة مرور']);
             //if user cant access to this unit
             if ($user->unit->unit_id != $request->unit_id)
-                return response()->json(['msg' => 'لا تملك صلاحية الوصول لهذه الوحدة']);
+                return response()->json(['status' => 400, 'msg' => 'لا تملك صلاحية الوصول لهذه الوحدة']);
         }
         return $next($request);
     }
