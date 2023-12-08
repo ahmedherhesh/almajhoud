@@ -74,6 +74,8 @@ class UserController extends MasterController
     }
     function destroy(User $user)
     {
+        if ($user->unitViolation)
+            return response()->json(['status' => 400, 'msg' => 'قام هذا المستخدم بتسجيل مخالفات مرورية فلا يمكن حذفه لكن يمكنك حظره عن استخدام التطبيق']);
         $user->delete();
         return response()->json(['status' => 200, 'msg' => 'تم حذف المستخدم بنجاح']);
     }

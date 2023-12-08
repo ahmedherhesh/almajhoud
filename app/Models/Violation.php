@@ -10,4 +10,8 @@ class Violation extends Model
 {
     use HasFactory,UserTrait;
     protected $fillable = ['user_id','title'];
+
+    function unitViolation(){
+        return $this->hasMany(UnitViolation::class);
+    }
 }

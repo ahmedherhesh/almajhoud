@@ -49,5 +49,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(UnitOfficer::class)->whereExpiresAt(null)->orderByDesc('id');
     }
-    
+    function unitViolation()
+    {
+        return $this->hasMany(UnitViolation::class);
+    }
 }

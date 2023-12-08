@@ -15,7 +15,7 @@ class UnitsViolationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'violation' => $this->violation->title,
+            'violation' => $this->violation->title ?? '',
             'count' => $this->count
         ];
     }
