@@ -26,7 +26,7 @@ class ViolationController extends Controller
 
     public function destroy(Violation $violation)
     {
-        if ($violation->unitViolation)
+        if ($violation->unitViolation->count())
             return response()->json(['status' => 400, 'msg' => 'تم تسجيل مخالفات تحت مسمى هذه المخالفه من قبل لذلك لا يمكن حذفها']);
         $violation->delete();
         return response()->json(['status' => 200, 'msg' => 'تم حذف المخالفة']);

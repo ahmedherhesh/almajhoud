@@ -68,7 +68,7 @@ class UnitController extends MasterController
 
     public function destroy(Unit $unit)
     {
-        if ($unit->violations)
+        if ($unit->violations->count())
             return response()->json(['status' => 400, 'msg' => 'هذه الوحدة بها مخالفات لذلك لا يمكن حذفها']);
 
         $unit->delete();
