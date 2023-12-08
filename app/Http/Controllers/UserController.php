@@ -9,6 +9,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends MasterController
 {
@@ -33,7 +34,10 @@ class UserController extends MasterController
             return response()->json(['status' => 200, 'msg' => '', new UserResource($user)]);
         return response()->json(['status' => 400, 'msg' => 'هذا المستخدم غير مسموح له بالدخول تحدث مع الأدمن من أجل حل المشكلة']);
     }
-
+    function permissions()
+    {
+        return ['status' => 200, 'data' => Permission::pluck('name')];
+    }
     function users()
     {
         $users = User::all();
@@ -69,7 +73,8 @@ class UserController extends MasterController
     {
         $user->update($request->all());
         if ($request->role)
-            $user->assignRole($request->role);
+            $user->syncRoles($request->role);
+        $user->syncPermissions(json_decode($request->permissions,true));
         return response()->json(['status' => 200, 'msg' => 'تم تحديث المستخدم']);
     }
     function destroy(User $user)

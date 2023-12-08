@@ -37,6 +37,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('set-user-block/{user}', 'setUserBlock');
                 Route::put('users/{user}', 'update');
                 Route::delete('users/{user}', 'destroy');
+                Route::get('permissions', 'permissions');
             });
             //all
             Route::post('change-my-password', 'changeMyPassword');
