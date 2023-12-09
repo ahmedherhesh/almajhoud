@@ -29,10 +29,10 @@ class UserController extends MasterController
         $user = User::create($request->all());
         $role = $this->isAdmin() ? $request->role : 'user';
         $user->assignRole($role);
+        if ($this->isAdmin() && $request->permissions)
+            $user->syncPermissions(json_decode($request->permissions, true));
         $user->showToken = true;
-        if ($user->status == 'active')
-            return response()->json(['status' => 200, 'msg' => '', new UserResource($user)]);
-        return response()->json(['status' => 400, 'msg' => 'هذا المستخدم غير مسموح له بالدخول تحدث مع الأدمن من أجل حل المشكلة']);
+        return response()->json(['status' => 200, 'data' => new UserResource($user)]);
     }
     function permissions()
     {
@@ -74,7 +74,8 @@ class UserController extends MasterController
         $user->update($request->all());
         if ($request->role)
             $user->syncRoles($request->role);
-        $user->syncPermissions(json_decode($request->permissions,true));
+        if ($request->permissions)
+            $user->syncPermissions(json_decode($request->permissions, true));
         return response()->json(['status' => 200, 'msg' => 'تم تحديث المستخدم']);
     }
     function destroy(User $user)
