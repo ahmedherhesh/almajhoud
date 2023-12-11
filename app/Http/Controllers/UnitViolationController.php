@@ -21,8 +21,6 @@ class UnitViolationController extends MasterController
             $unitsViolation->whereDate('created_at', '<=', $request->to);
         if (!$request->from && !$request->to)
             $unitsViolation->whereDate('created_at', Carbon::now());
-        if (!$this->isAdmin())
-            $unitsViolation = $unitsViolation->whereUserId($this->user()->id);
         $unitsViolation = $unitsViolation->select(DB::raw("SUM(`count`) AS `count`"), 'violation_id')
             ->groupBy('violation_id')->get();
         return response()->json([

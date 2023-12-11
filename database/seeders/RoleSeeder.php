@@ -14,17 +14,24 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = Role::create(['name' => 'admin']);
-        Role::create(['name' => 'user']);
-        $permissions = [
-            ['name' => 'تسجيل المخالفات'],
-            ['name' => 'عرض المخالفات'],
-            ['name' => 'تعديل المخالفات'],
-            ['name' => 'حذف المخالفات'],
+        Role::whereName('admin')->updateOrCreate(['name' => 'admin']);
+        Role::whereName('user')->updateOrCreate(['name' => 'user']);
+        $main_permissions = [
+            'الضباط',
+            'الوحدات',
+            'مخالفات الوحدات',
+            'عناوين المخالفات',
         ];
-        foreach ($permissions as $permission) {
-            $permission = Permission::create($permission);
-            $permission->assignRole($admin);
+        $all_permissions = [];
+        $crud = ['اضافة', 'عرض', 'تعديل', 'حذف'];
+        foreach ($main_permissions as $permission) {
+            foreach ($crud as $task) {
+                $all_permissions[] = ['name' => "$task $permission"];
+            }
+        }
+        $all_permissions[] = ['name' => "عرض اجمالي المخالفات"];
+        foreach ($all_permissions as $permission) {
+            $permission = Permission::whereName($permission)->updateOrCreate($permission);
         }
     }
 }
