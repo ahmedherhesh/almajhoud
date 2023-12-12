@@ -56,7 +56,6 @@ Route::group(['prefix' => 'v1'], function () {
             });
             //violations crud
             Route::controller(ViolationController::class)->group(function () {
-                Route::get('violations', 'index')->middleware(['check.permission:عرض عناوين المخالفات']);
                 Route::post('violations', 'store')->middleware(['check.permission:اضافة عناوين المخالفات']);
                 Route::put('violations/{violation}', 'update')->middleware(['check.permission:تعديل عناوين المخالفات']);
                 Route::delete('violations/{violation}', 'destroy')->middleware(['check.permission:حذف عناوين المخالفات']);
@@ -64,6 +63,7 @@ Route::group(['prefix' => 'v1'], function () {
             // Total unit violations
             Route::get('unit-violations', [UnitViolationController::class, 'index'])->middleware(['check.permission:عرض اجمالي المخالفات']);
         });
+        Route::get('violations', [ViolationController::class,'index'])->middleware(['check.permission:عرض عناوين المخالفات']);
         //all
         Route::middleware(['have.unit'])->group(function () {
             // One unit violations
