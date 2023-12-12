@@ -40,7 +40,7 @@ class UserController extends MasterController
     }
     function users()
     {
-        $users = User::all();
+        $users = User::where('id','!=',$this->user()->id)->get();
         return $this->response($users, ['status' => 200, 'data' => UserResource::collection($users)]);
     }
     function getUser()

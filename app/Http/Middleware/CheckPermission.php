@@ -18,6 +18,6 @@ class CheckPermission
         $user = auth('sanctum')->user();
         if ($user && in_array($permission, $user->getPermissionNames()->toArray()))
             return $next($request);
-        return response()->json(['status' => 400, 'msg' => 'تم حظر الوصول لهذه الصفحة']);
+        return response()->json(['status' => 403, 'msg' => 'تم حظر الوصول لهذه الصفحة']);
     }
 }

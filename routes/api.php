@@ -52,7 +52,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('units/', 'index')->middleware(['check.permission:عرض الوحدات']);
                 Route::post('units/', 'store')->middleware(['check.permission:اضافة الوحدات']);
                 Route::put('units/{unit}', 'update')->middleware(['check.permission:تعديل الوحدات']);
-                Route::delete('units/{unit}', 'destroy')->middleware(['check.permission:حذف الوحدات الوحدات']);
+                Route::delete('units/{unit}', 'destroy')->middleware(['check.permission:حذف الوحدات']);
             });
             //violations crud
             Route::controller(ViolationController::class)->group(function () {
