@@ -18,8 +18,7 @@ class RoleSeeder extends Seeder
         Role::whereName('user')->updateOrCreate(['name' => 'user']);
         $main_permissions = [
             'الضباط',
-            'الوحدات',
-            'مخالفات الوحدات',
+            'مخالفات',
             'عناوين المخالفات',
         ];
         $all_permissions = [];

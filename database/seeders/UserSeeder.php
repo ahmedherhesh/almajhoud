@@ -21,6 +21,14 @@ class UserSeeder extends Seeder
             'status' => 'active'
         ]);
         $user->assignRole('admin');
+        $user = User::create([
+            'name' => 'Ahmed Harhash',
+            'username' => 'ahmed_herhesh',
+            'email' => 'a@a.c',
+            'password' => 'secret',
+            'status' => 'active'
+        ]);
+        $user->assignRole('admin');
         User::factory(10)->create();
     }
 }

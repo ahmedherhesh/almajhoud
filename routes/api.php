@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\UnitController;
-use App\Http\Controllers\UnitViolationController;
+use App\Http\Controllers\OfficerViolationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViolationController;
 use Illuminate\Http\Request;
@@ -46,14 +46,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => ['auth:sanctum']], function () {
         //admin
         Route::group(['middleware' => ['role:admin']], function () {
-            Route::post('set-unit-officer', [UnitController::class, 'setUnitOfficer'])->middleware(['check.permission:تعديل الوحدات']);
-            //units crud
-            Route::controller(UnitController::class)->group(function () {
-                Route::get('units/', 'index')->middleware(['check.permission:عرض الوحدات']);
-                Route::post('units/', 'store')->middleware(['check.permission:اضافة الوحدات']);
-                Route::put('units/{unit}', 'update')->middleware(['check.permission:تعديل الوحدات']);
-                Route::delete('units/{unit}', 'destroy')->middleware(['check.permission:حذف الوحدات']);
-            });
             //violations crud
             Route::controller(ViolationController::class)->group(function () {
                 Route::post('violations', 'store')->middleware(['check.permission:اضافة عناوين المخالفات']);
@@ -61,16 +53,16 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::delete('violations/{violation}', 'destroy')->middleware(['check.permission:حذف عناوين المخالفات']);
             });
             // Total unit violations
-            Route::get('unit-violations', [UnitViolationController::class, 'index'])->middleware(['check.permission:عرض اجمالي المخالفات']);
+            Route::get('unit-violations', [OfficerViolationController::class, 'index'])->middleware(['check.permission:عرض اجمالي المخالفات']);
         });
-        Route::get('violations', [ViolationController::class,'index'])->middleware(['check.permission:عرض عناوين المخالفات']);
+        Route::get('violations', [ViolationController::class, 'index'])->middleware(['check.permission:عرض عناوين المخالفات']);
         //all
         Route::middleware(['have.unit'])->group(function () {
             // One unit violations
-            Route::get('units/{unit}', [UnitController::class, 'show'])->middleware(['check.permission:عرض مخالفات الوحدات']);
-            Route::post('unit-violations', [UnitViolationController::class, 'store'])->middleware(['check.permission:اضافة مخالفات الوحدات']);
-            Route::put('unit-violations/{id}', [UnitViolationController::class, 'update'])->middleware(['check.permission:تعديل مخالفات الوحدات']);
-            Route::delete('unit-violations/{id}', [UnitViolationController::class, 'destroy'])->middleware(['check.permission:حذف مخالفات الوحدات']);
+            Route::get('users/{user}', [OfficerViolationController::class, 'show'])->middleware(['check.permission:عرض مخالفات']);
+            Route::post('officer-violations', [OfficerViolationController::class, 'store'])->middleware(['check.permission:اضافة مخالفات']);
+            Route::put('officer-violations/{id}', [OfficerViolationController::class, 'update'])->middleware(['check.permission:تعديل مخالفات']);
+            Route::delete('officer-violations/{id}', [OfficerViolationController::class, 'destroy'])->middleware(['check.permission:حذف مخالفات']);
         });
     });
 });

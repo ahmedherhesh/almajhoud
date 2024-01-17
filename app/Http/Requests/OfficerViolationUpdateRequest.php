@@ -2,15 +2,16 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Foundation\Http\FormRequest;
 
-class UnitOfficerRequest extends MasterRequest
+class OfficerViolationUpdateRequest extends MasterRequest
 {
+
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'unit_id' => 'required|exists:units,id',
-            'expires_at' => 'nullable|date_format:Y-m-d H:i:s',
+            'count'   => 'required|integer'
         ];
     }
 }

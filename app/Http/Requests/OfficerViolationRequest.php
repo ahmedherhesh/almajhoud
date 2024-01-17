@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 
-class UnitViolationRequest extends MasterRequest
+class OfficerViolationRequest extends MasterRequest
 {
     public function rules(): array
     {
