@@ -16,6 +16,7 @@ class OfficerViolationController extends MasterController
 {
     public function index(Request $request)
     {
+        //All Violations 
         $officersViolation = OfficerViolation::query();
         if ($request->from)
             $officersViolation->whereDate('created_at', '>=', $request->from);
@@ -32,6 +33,7 @@ class OfficerViolationController extends MasterController
     }
     public function show(Request $request, User $user)
     {
+        // Get All Violation For One Officer
         $officerViolation = OfficerViolation::query();
         if ($request->from)
             $officerViolation->whereDate('created_at', '>=', $request->from);
