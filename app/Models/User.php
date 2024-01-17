@@ -45,12 +45,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    function unit()
+    function officerViolation()
     {
-        return $this->hasOne(UnitOfficer::class)->whereExpiresAt(null)->orderByDesc('id');
-    }
-    function unitViolation()
-    {
-        return $this->hasMany(UnitViolation::class);
+        return $this->hasMany(OfficerViolation::class);
     }
 }
