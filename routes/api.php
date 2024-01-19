@@ -63,3 +63,4 @@ Route::group(['prefix' => 'v1'], function () {
         Route::delete('officer-violations/{id}', [OfficerViolationController::class, 'destroy'])->middleware(['check.permission:حذف مخالفات']);
     });
 });
+Route::get('test-violations', [OfficerViolationController::class, 'index']);

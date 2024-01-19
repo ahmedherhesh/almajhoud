@@ -11,6 +11,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class OfficerViolationController extends MasterController
 {
@@ -25,11 +26,18 @@ class OfficerViolationController extends MasterController
         if (!$request->from && !$request->to)
             $officersViolation->whereDate('created_at', Carbon::now());
         $officersViolation = $officersViolation->select(DB::raw("SUM(`count`) AS `count`"), 'violation_id')
-            ->groupBy('violation_id')->get();
-        return response()->json([
-            'status' => 200,
-            'data' => OfficersViolationResource::collection($officersViolation)
-        ]);
+            ->groupBy('violation_id');
+        if (!$request->export) {
+            $violations = OfficersViolationResource::collection($officersViolation->get());
+            return response()->json([
+                'status' => 200,
+                'data' => $violations
+            ]);
+        }
+        if ($request->export == 'pdf') {
+            $pdf = PDF::loadView('violations', ['violations' => $officersViolation->with('violation')->get()->chunk(2)]);
+            return $pdf->download(str_replace(' ', '__', now()) . '.pdf');
+        }
     }
     public function show(Request $request, User $user)
     {
