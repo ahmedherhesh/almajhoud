@@ -52,11 +52,11 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::put('violations/{violation}', 'update')->middleware(['check.permission:تعديل عناوين المخالفات']);
                 Route::delete('violations/{violation}', 'destroy')->middleware(['check.permission:حذف عناوين المخالفات']);
             });
-            // Total unit violations
+            // Total violations
             Route::get('all-violations', [OfficerViolationController::class, 'index'])->middleware(['check.permission:عرض اجمالي المخالفات']);
         });
         Route::get('violations', [ViolationController::class, 'index'])->middleware(['check.permission:عرض عناوين المخالفات']);
-        // One unit violations
+        // Officer violations crud
         Route::get('users/{user}', [OfficerViolationController::class, 'show'])->middleware(['check.permission:عرض مخالفات']);
         Route::post('officer-violations', [OfficerViolationController::class, 'store'])->middleware(['check.permission:اضافة مخالفات']);
         Route::put('officer-violations/{id}', [OfficerViolationController::class, 'update'])->middleware(['check.permission:تعديل مخالفات']);

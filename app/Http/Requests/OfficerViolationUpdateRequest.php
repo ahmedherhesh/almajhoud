@@ -10,7 +10,6 @@ class OfficerViolationUpdateRequest extends MasterRequest
     public function rules(): array
     {
         return [
-            'unit_id' => 'required|exists:units,id',
             'count'   => 'required|integer'
         ];
     }
