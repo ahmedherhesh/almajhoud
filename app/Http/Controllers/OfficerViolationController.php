@@ -15,16 +15,25 @@ use PDF;
 
 class OfficerViolationController extends MasterController
 {
+    public function searchFilter(Request $request, $data)
+    {
+        if ($request->from)
+            $data->whereDate('created_at', '>=', $request->from);
+        if ($request->to)
+            $data->whereDate('created_at', '<=', $request->to);
+        if (!$request->from && !$request->to)
+            $data->whereDate('created_at', Carbon::now());
+        if ($request->inList) {
+            $inList = json_decode($request->inList);
+            if (is_array($inList))
+                $data->whereIn('violation_id', $inList);
+        }
+    }
     public function index(Request $request)
     {
         //All Violations 
         $officersViolation = OfficerViolation::query();
-        if ($request->from)
-            $officersViolation->whereDate('created_at', '>=', $request->from);
-        if ($request->to)
-            $officersViolation->whereDate('created_at', '<=', $request->to);
-        if (!$request->from && !$request->to)
-            $officersViolation->whereDate('created_at', Carbon::now());
+        $this->searchFilter($request, $officersViolation);
         $officersViolation = $officersViolation->select(DB::raw("SUM(`count`) AS `count`"), 'violation_id')
             ->groupBy('violation_id');
         if (!$request->export) {
@@ -42,20 +51,15 @@ class OfficerViolationController extends MasterController
     public function show(Request $request, User $user)
     {
         // Get All Violation For One Officer
-        $officerViolation = OfficerViolation::query();
-        if ($request->from)
-            $officerViolation->whereDate('created_at', '>=', $request->from);
-        if ($request->to)
-            $officerViolation->whereDate('created_at', '<=', $request->to);
-        if (!$request->from && !$request->to)
-            $officerViolation->whereDate('created_at', Carbon::now());
+        $officerViolations = OfficerViolation::query();
+        $this->searchFilter($request, $officerViolations);
         if (!$this->isAdmin())
-            $officerViolation = $officerViolation->whereUserId($this->user()->id);
-        else $officerViolation = $officerViolation->whereUserId($user->id);
-        $officerViolation = $officerViolation->get();
+            $officerViolations = $officerViolations->whereUserId($this->user()->id);
+        else $officerViolations = $officerViolations->whereUserId($user->id);
+        $officerViolations = $officerViolations->get();
         return response()->json([
             'status' => 200,
-            'data' => OfficerViolationResource::collection($officerViolation)
+            'data' => OfficerViolationResource::collection($officerViolations)
         ]);
     }
     public function store(OfficerViolationRequest $request)
