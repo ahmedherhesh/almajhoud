@@ -25,7 +25,7 @@ class OfficerViolationController extends MasterController
             $data->whereDate('created_at', Carbon::now());
         if ($request->inList) {
             $inList = json_decode($request->inList);
-            if (is_array($inList))
+            if (is_array($inList) && !empty($inList))
                 $data->whereIn('violation_id', $inList);
         }
     }
