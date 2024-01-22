@@ -28,6 +28,11 @@ class OfficerViolationController extends MasterController
             if (is_array($inList) && !empty($inList))
                 $data->whereIn('violation_id', $inList);
         }
+        if ($request->notInList) {
+            $notInList = json_decode($request->notInList);
+            if (is_array($notInList) && !empty($notInList))
+                $data->whereNotIn('violation_id', $notInList);
+        }
     }
     public function index(Request $request)
     {
