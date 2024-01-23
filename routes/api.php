@@ -34,6 +34,7 @@ Route::group(['prefix' => 'v1'], function () {
                 //create officer
                 Route::post('register', 'register')->name('register')->middleware(['check.permission:اضافة الضباط']);
                 Route::get('users', 'users')->middleware(['check.permission:عرض الضباط']);
+                Route::get('user-names', 'userNames');
                 Route::put('users/{user}', 'update')->middleware(['check.permission:تعديل الضباط']);
                 Route::delete('users/{user}', 'destroy')->middleware(['check.permission:حذف الضباط']);
                 Route::get('permissions', 'permissions');

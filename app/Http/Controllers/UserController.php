@@ -40,8 +40,12 @@ class UserController extends MasterController
     }
     function users()
     {
-        $users = User::where('id','!=',$this->user()->id)->get();
+        $users = User::where('id', '!=', $this->user()->id)->get();
         return $this->response($users, ['status' => 200, 'data' => UserResource::collection($users)]);
+    }
+    function userNames()
+    {
+        return response()->json(['status' => 200, 'data' => User::all(['id', 'name'])]);
     }
     function getUser()
     {
