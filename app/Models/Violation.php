@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Violation extends Model
 {
-    use HasFactory,UserTrait;
-    protected $fillable = ['user_id','title'];
+    use HasFactory, UserTrait;
+    protected $fillable = ['user_id', 'title'];
 
-    function unitViolation(){
-        return $this->hasMany(UnitViolation::class);
+    function officerViolation()
+    {
+        return $this->hasMany(OfficerViolation::class);
     }
 }
