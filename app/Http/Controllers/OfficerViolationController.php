@@ -66,6 +66,10 @@ class OfficerViolationController extends MasterController
         if (!$this->isAdmin())
             $officerViolations = $officerViolations->whereUserId($this->user()->id);
         else $officerViolations = $officerViolations->whereUserId($user->id);
+        // Get data By SUM count if ( from or to) in request
+        if ($request->from || $request->to)
+            $officerViolations = $officerViolations->select(DB::raw("SUM(`count`) AS `count`"), 'violation_id')
+                ->groupBy('violation_id');
         $officerViolations = $officerViolations->get();
         return response()->json([
             'status' => 200,
