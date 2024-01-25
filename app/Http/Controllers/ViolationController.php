@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ViolationRequest;
 use App\Http\Resources\ViolationResource;
+use App\Imports\ViolationsImport;
 use App\Models\Violation;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ViolationController extends Controller
 {
     public function index()
     {
         return response()->json(['status' => 200, 'data' => ViolationResource::collection(Violation::all())]);
+    }
+    public function import()
+    {
+        Excel::import(new ViolationsImport, 'xlsx/violations.xlsx');
     }
     public function store(ViolationRequest $request)
     {

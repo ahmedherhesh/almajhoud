@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('import-violations', [ViolationController::class, 'import']);
+
 Route::group(['prefix' => 'v1'], function () {
 
     Route::get('login', function () {
